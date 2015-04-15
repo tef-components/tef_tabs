@@ -1,0 +1,135 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<polymer-element name="tef-tabs" attributes="selected columns">
+    <template>
+        <style>
+        .tef-tabs {
+          height: 50px;
+          width: 100%;
+          background-color: #d1d9dd;
+          border-bottom: 1px solid #e5eaec;
+          box-sizing: border-box;
+        }
+        .tef-tabs ::content tef-tab {
+          height: 40px;
+          color: #84959e;
+          background-color: #beccd4;
+          line-height: 40px;
+          font-size: 14px;
+          text-align: center;
+          padding: 0 10px;
+          border-bottom: 1px solid #b7c1c6;
+          border-right: 1px solid #b7c1c6;
+          cursor: pointer;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: list-item;
+        }
+        .tef-tabs ::content tef-tab:hover,
+        .tef-tabs ::content tef-tab:focus,
+        .tef-tabs ::content tef-tab[active] {
+          color: #364145;
+        }
+        .tef-tabs ::content tef-tab[active] {
+          color: #364145;
+          background-color: #d1d9dd;
+          border-bottom-color: #d1d9dd;
+        }
+        .tef-tabs ::content tef-tab [icon] {
+          font-size: 24px;
+          padding: 0 10px;
+        }
+
+        [columns~="1"] ::content tef-tab {
+          width: 100%;
+        }
+        [columns~="2"] ::content tef-tab {
+          width: 50%;
+        }
+        [columns~="3"] ::content tef-tab {
+          width: 33.333333%;
+        }
+        [columns~="4"] ::content tef-tab {
+          width: 25%;
+        }
+        [columns~="5"] ::content tef-tab {
+          width: 20%;
+        }
+        [columns] ::content tef-tab { 
+          float: left;
+          box-sizing: border-box;
+          -webkit-transition: width 0.2s ease;
+          transition: width 0.2s ease;
+        }
+
+        </style>    
+        <div id ="container" class="tef-tabs">
+            <content select="tef-tab"></content>
+        </div>
+    </template>
+	<script>
+        Polymer({
+            imReady: false,
+            publish: {
+                selected: {
+                    value: 0,
+                    reflect: true
+                }
+            },            
+            tabs: [],
+            selectedChanged: function(oldValue, newValue){
+                if (newValue >= 0 && newValue < this.children.length && this.imReady){
+                    this.children[newValue].select();
+                    this.fire("change");
+                }
+            },
+            domReady: function(){
+                
+                this.$.container.setAttribute("columns", this.children.length);
+                
+                var nowSelected = this.children[this.selected];
+                this.children[this.selected].setAttribute("active",""); 
+
+                var parent = this;
+
+                for (var i=0; i < this.children.length; i++){
+                    var tab = this.children[i];
+                    tab.index = i;
+                    
+                    tab.addEventListener("selected", function(){                        
+                        if (nowSelected != this){
+                            if(nowSelected != null) nowSelected.active = false;
+                            nowSelected = this;
+                            this.active = true;
+
+                            parent.imReady = false;
+                            parent.selected = this.index;
+                            parent.imReady = true;
+                        }
+
+                    });
+                }
+                this.imReady = true;
+                
+            }
+        });				
+	</script>	
+</polymer-element>
+<polymer-element name="tef-tab" attributes="active" on-click ="{{select}}">    
+    <script>
+    
+        Polymer({
+            publish: {
+                active: {
+                    value: false,
+                    reflect: true
+                }
+            },
+            index: -1,
+            select: function(){
+                this.fire("selected");
+            }
+        });             
+    </script>   
+</polymer-element>

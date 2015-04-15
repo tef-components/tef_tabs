@@ -1,0 +1,173 @@
+<!doctype html>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width">
+    <title>TEF input demo</title>
+
+    <!-- Web Components polyfill -->
+    <script>
+      if ('registerElement' in document
+        && 'createShadowRoot' in HTMLElement.prototype
+        && 'import' in document.createElement('link')
+        && 'content' in document.createElement('template')) {
+      } else {
+        document.write('<script src="bower_components/webcomponentsjs/webcomponents.min.js"><\/script>');
+      }
+    </script>
+
+    <link rel="import" href="tef_tabs.html">    
+    <link id="themeComps" rel="stylesheet" href="../theme_telefonica/css/components.telefonica.css">
+    
+
+    <style>
+      header[columns] { padding-top: 30px; }
+      h1 { margin-top: 0; }
+      header > div { padding-top: 2px; }
+      code {
+        display: block;
+        overflow: hidden;
+      }
+      style {
+        display: block;
+        white-space: pre;
+        color: #0086B3;
+        border: 1px solid #cfcece;
+        background: #f2f2f2;
+        margin: 20px 0;
+        line-height: 25px;
+        overflow-y: auto;
+        border-radius: 4px;
+      }
+      .output{
+        color: grey;
+        border: 1px solid rgb(205, 205, 205);
+        border-left: none;
+        border-right: none;
+        padding: 10px;
+      }
+    </style>
+  </head>
+
+  <body unresolved>
+    <div class="tef-wrapper tef-content">
+      <header columns="2 xs1">
+        <h1>Tabs</h1>
+        <div>
+          <label>Change theme</label>
+          <div class="tef-dropdown" icon="angle_down">
+            <select id="themeSelector">
+              <option value="telefonica">Telefónica</option>
+              <option value="movistar">Movistar</option>
+              <option value="o2">O2</option>
+              <option value="vivo">Vivo</option>
+            </select>
+          </div>
+        </div>
+      </header>
+      <h2>Default</h2>
+
+
+      <tef-tabs>
+        <tef-tab>Tab 1</tef-tab>
+        <tef-tab>Tab 2</tef-tab>
+        <tef-tab>Tab 3 with a very looooooooooooooooooooong text</tef-tab>
+        <tef-tab>Tab 4</tef-tab>
+      </tef-tabs>
+      <code>
+        <style>
+      <tef-tabs>
+        <tef-tab>Tab 1</tef-tab>
+        <tef-tab>Tab 2</tef-tab>
+        <tef-tab>Tab 3 with a very looooooooooooooooooooong text</tef-tab>
+        <tef-tab>Tab 4</tef-tab>
+      </tef-tabs>
+        </style>
+      </code>
+
+      <h2>Icons</h2>
+      <p>The selected attribute can be set for tef-tabs in order to preselect a tab or select it in real time.</p>
+      <tef-tabs selected="1">
+        <tef-tab><i icon="user"></i></tef-tab>
+        <tef-tab><i icon="search"></i></tef-tab>
+        <tef-tab><i icon="help_circle"></i></tef-tab>
+      </tef-tabs>
+      <code>
+        <style>
+      <tef-tabs selected="1">
+        <tef-tab><i icon="user"></i></tef-tab>
+        <tef-tab><i icon="search"></i></tef-tab>
+        <tef-tab><i icon="help_circle"></i></tef-tab>
+      </tef-tabs>
+        </style>
+      </code>
+    
+
+      <h2>Events</h2>
+      <p>You can create callbacks for the "selected" event in each tab.</p>
+      <tef-tabs selected="1">
+        <tef-tab id="userTab"><i icon="user"></i></tef-tab>
+        <tef-tab id="searchTab"><i icon="search"></i></tef-tab>
+        <tef-tab id="helpTab"><i icon="help_circle"></i></tef-tab>
+      </tef-tabs>
+      <p id="output" class="output">Go ahead click in any tab!</p>
+
+      <code>
+        <style>
+    var outp = document.getElementById("output");
+
+    document.getElementById("userTab").addEventListener("selected", function(){
+      outp.innerHTML = "User tab has been selected."
+    });
+        </style>
+      </code>
+
+      <p>You can also create a callback for the "change" event in the tef-tabs component.</p>
+      <p>Anytime a tab is selected, the selected attribute in tef-tabs is updated in real time. You can check this inspecting the DOM.</p>
+      <tef-tabs id="indexTabs">
+        <tef-tab>Tab 0</tef-tab>
+        <tef-tab>Tab 1</tef-tab>
+        <tef-tab>Tab 2</tef-tab>
+        <tef-tab>Tab 3</tef-tab>
+      </tef-tabs>
+      <p class ="output" id="output2">Go ahead, click in any tab!</p>
+
+      <code>
+        <style>
+    var outp2 = document.getElementById("output2");
+
+    document.getElementById("indexTabs").addEventListener("change", function(){
+      outp2.innerHTML = "The selected tab now is #" + this.selected;
+    });
+        </style>
+      </code>
+
+    </div>
+    
+    <script>
+
+    var outp = document.getElementById("output");
+    var outp2 = document.getElementById("output2");
+
+    document.getElementById("userTab").addEventListener("selected", function(){
+      outp.innerHTML = "User tab has been selected.";
+    });
+
+    document.getElementById("searchTab").addEventListener("selected", function(){
+      outp.innerHTML = "Search tab has been selected.";
+    });
+
+    document.getElementById("helpTab").addEventListener("selected", function(){
+      outp.innerHTML = "Help tab has been selected.";
+    });
+
+    document.getElementById("indexTabs").addEventListener("change", function(){
+      outp2.innerHTML = "The selected tab now is #" + this.selected;
+    });
+
+    </script>
+    
+  </body>
+</html>
